@@ -31,8 +31,8 @@ st.set_page_config(
 #     aktif BOOLEAN DEFAULT TRUE
 # );
 
-SUPABASE_URL = "https://XXXX.supabase.co"  # Kendi URL'ini gir
-SUPABASE_KEY = "XXXX"  # Kendi anon key'ini gir
+SUPABASE_URL = "https://tlcgcdiycgfxpxwzkwuf.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsY2djZGl5Y2dmeHB4d3prd3VmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDgwMjksImV4cCI6MjA4MTIyNDAyOX0.4GnWTvUmdLzqcP0v8MAqaNUQkYgk0S8qrw6nSPsz-t4"
 
 # =============================================================================
 # KVKK METİN VERSİYONLARI
