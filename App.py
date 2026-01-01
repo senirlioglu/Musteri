@@ -9,6 +9,20 @@ st.set_page_config(
 )
 
 # =============================================================================
+# GOOGLE ANALYTICS
+# =============================================================================
+st.markdown("""
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HWYGLZYYF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HWYGLZYYF4');
+</script>
+""", unsafe_allow_html=True)
+
+# =============================================================================
 # KVKK METİN VERSİYONLARI
 # =============================================================================
 AYDINLATMA_METNI_VERSIYON = "v1.0"
@@ -155,6 +169,16 @@ if magaza_kodu not in MAGAZALAR:
 
 magaza_adi = MAGAZALAR[magaza_kodu]
 
+# GA'ya mağaza bilgisi gönder
+st.markdown(f"""
+<script>
+  gtag('event', 'magaza_ziyaret', {{
+    'magaza_kodu': '{magaza_kodu}',
+    'magaza_adi': '{magaza_adi}'
+  }});
+</script>
+""", unsafe_allow_html=True)
+
 # Mağaza bilgisi
 st.markdown(f'<div class="store-name">📍 {magaza_kodu} - {magaza_adi} Mağazası</div>', unsafe_allow_html=True)
 
@@ -171,7 +195,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("✅ **Özel indirimler**")
 with col2:
-    st.markdown("✅ **SKT fırsatları**")
+    st.markdown("✅ **Hemen haberdar ol**")
 with col3:
     st.markdown("✅ **Anlık bildirim**")
 
@@ -210,7 +234,7 @@ if onay_aydinlatma and onay_ticari:
     whatsapp_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={encoded_mesaj}"
 
     st.markdown(f'''
-        <a href="{whatsapp_link}" target="_blank" style="
+        <a href="{whatsapp_link}" target="_blank" onclick="gtag('event', 'whatsapp_tiklama', {{'magaza_kodu': '{magaza_kodu}', 'magaza_adi': '{magaza_adi}'}});" style="
             display: block;
             background-color: #25D366;
             color: white;
