@@ -171,7 +171,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("✅ **Özel indirimler**")
 with col2:
-    st.markdown("✅ **SKT fırsatları**")
+    st.markdown("✅ **Hemen haberdar ol**")
 with col3:
     st.markdown("✅ **Anlık bildirim**")
 
