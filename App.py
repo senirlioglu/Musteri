@@ -169,6 +169,16 @@ if magaza_kodu not in MAGAZALAR:
 
 magaza_adi = MAGAZALAR[magaza_kodu]
 
+# GA'ya mağaza bilgisi gönder
+st.markdown(f"""
+<script>
+  gtag('event', 'magaza_ziyaret', {{
+    'magaza_kodu': '{magaza_kodu}',
+    'magaza_adi': '{magaza_adi}'
+  }});
+</script>
+""", unsafe_allow_html=True)
+
 # Mağaza bilgisi
 st.markdown(f'<div class="store-name">📍 {magaza_kodu} - {magaza_adi} Mağazası</div>', unsafe_allow_html=True)
 
