@@ -1,8 +1,5 @@
 import streamlit as st
 import urllib.parse
-from datetime import datetime
-import hashlib
-import json
 
 # Sayfa yapılandırması
 st.set_page_config(
@@ -10,29 +7,6 @@ st.set_page_config(
     page_icon="🛒",
     layout="centered"
 )
-
-# =============================================================================
-# SUPABASE AYARLARI - BURAYA KENDİ BİLGİLERİNİ GİR
-# =============================================================================
-# Supabase'de şu tabloyu oluştur:
-# 
-# CREATE TABLE kvkk_rizalar (
-#     id SERIAL PRIMARY KEY,
-#     created_at TIMESTAMP DEFAULT NOW(),
-#     magaza_kodu VARCHAR(10),
-#     magaza_adi VARCHAR(100),
-#     aydinlatma_metni_versiyonu VARCHAR(10),
-#     acik_riza_metni_versiyonu VARCHAR(10),
-#     onay_timestamp TIMESTAMP,
-#     onay_hash VARCHAR(64),
-#     ip_adresi VARCHAR(45),
-#     user_agent TEXT,
-#     opt_out_tarihi TIMESTAMP DEFAULT NULL,
-#     aktif BOOLEAN DEFAULT TRUE
-# );
-
-SUPABASE_URL = "https://tlcgcdiycgfxpxwzkwuf.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsY2djZGl5Y2dmeHB4d3prd3VmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDgwMjksImV4cCI6MjA4MTIyNDAyOX0.4GnWTvUmdLzqcP0v8MAqaNUQkYgk0S8qrw6nSPsz-t4"
 
 # =============================================================================
 # KVKK METİN VERSİYONLARI
@@ -142,8 +116,8 @@ Kişisel verileriniz; yurt içi ve yurt dışı hizmet tedarikçileri ile pazarl
 
 6698 sayılı Kanun'un 11. maddesi kapsamındaki taleplerinizi kvkk@a101.com.tr e-posta adresine iletebilirsiniz.
 
-**Veri Sorumlusu:** Yeni Mağazacılık A.Ş.  
-**Adres:** Burhaniye Mah. Nagehan Sok. No: 4B/1 Üsküdar/İstanbul  
+**Veri Sorumlusu:** Yeni Mağazacılık A.Ş.
+**Adres:** Burhaniye Mah. Nagehan Sok. No: 4B/1 Üsküdar/İstanbul
 **Mersis No:** 0948042376200016
 """
 
@@ -156,47 +130,6 @@ A101 tarafından, seçmiş olduğum mağazaya özel kampanya, indirim ve fırsat
 
 Açık rızamı dilediğim zaman geri alabileceğimi biliyorum.
 """
-
-# =============================================================================
-# YARDIMCI FONKSİYONLAR
-# =============================================================================
-def generate_consent_hash(magaza_kodu, timestamp, aydinlatma_v, riza_v):
-    """Rıza kanıtı için hash oluştur"""
-    data = f"{magaza_kodu}|{timestamp}|{aydinlatma_v}|{riza_v}"
-    return hashlib.sha256(data.encode()).hexdigest()
-
-def log_consent_to_supabase(magaza_kodu, magaza_adi):
-    """Supabase'e rıza kaydı gönder"""
-    try:
-        from supabase import create_client
-        
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        
-        timestamp = datetime.now().isoformat()
-        consent_hash = generate_consent_hash(
-            magaza_kodu, 
-            timestamp, 
-            AYDINLATMA_METNI_VERSIYON, 
-            ACIK_RIZA_METNI_VERSIYON
-        )
-        
-        data = {
-            "magaza_kodu": magaza_kodu,
-            "magaza_adi": magaza_adi,
-            "aydinlatma_metni_versiyonu": AYDINLATMA_METNI_VERSIYON,
-            "acik_riza_metni_versiyonu": ACIK_RIZA_METNI_VERSIYON,
-            "onay_timestamp": timestamp,
-            "onay_hash": consent_hash,
-            "aktif": True
-        }
-        
-        supabase.table("kvkk_rizalar").insert(data).execute()
-        return True, consent_hash
-        
-    except Exception as e:
-        # Supabase bağlantısı yoksa bile devam et (test modu)
-        st.warning(f"⚠️ Rıza kaydı loglanamadı: {str(e)}")
-        return False, None
 
 # =============================================================================
 # ANA UYGULAMA
@@ -271,18 +204,11 @@ st.markdown("")
 
 # WhatsApp butonu
 if onay_aydinlatma and onay_ticari:
-    
-    # Rıza kaydını logla
-    if 'consent_logged' not in st.session_state:
-        success, consent_hash = log_consent_to_supabase(magaza_kodu, magaza_adi)
-        st.session_state.consent_logged = True
-        st.session_state.consent_hash = consent_hash
-    
     # WhatsApp mesajı
     mesaj = f"Merhaba, {magaza_kodu} {magaza_adi} mağazasındaki kampanyalardan WhatsApp üzerinden haberdar olmak istiyorum."
     encoded_mesaj = urllib.parse.quote(mesaj)
     whatsapp_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={encoded_mesaj}"
-    
+
     st.markdown(f'''
         <a href="{whatsapp_link}" target="_blank" style="
             display: block;
@@ -299,13 +225,13 @@ if onay_aydinlatma and onay_ticari:
             💬 WhatsApp ile Katıl
         </a>
     ''', unsafe_allow_html=True)
-    
+
     st.markdown("")
     st.success("✅ Butona tıklayarak WhatsApp'a yönlendirileceksiniz.")
-    
+
     # Çıkış bilgisi
     st.info("ℹ️ Listeden çıkmak için WhatsApp'ta **ÇIKIŞ** yazmanız yeterlidir.")
-    
+
 else:
     st.markdown('''
         <div style="
@@ -322,7 +248,7 @@ else:
             💬 WhatsApp ile Katıl
         </div>
     ''', unsafe_allow_html=True)
-    
+
     st.markdown("")
     st.info("☝️ Devam etmek için yukarıdaki onay kutularını işaretleyiniz.")
 
