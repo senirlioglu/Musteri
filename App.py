@@ -234,7 +234,7 @@ if onay_aydinlatma and onay_ticari:
     whatsapp_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={encoded_mesaj}"
 
     st.markdown(f'''
-        <a href="{whatsapp_link}" target="_blank" style="
+        <a href="{whatsapp_link}" target="_blank" onclick="gtag('event', 'whatsapp_tiklama', {{'magaza_kodu': '{magaza_kodu}', 'magaza_adi': '{magaza_adi}'}});" style="
             display: block;
             background-color: #25D366;
             color: white;
