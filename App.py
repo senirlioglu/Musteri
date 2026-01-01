@@ -3,6 +3,7 @@ import urllib.parse
 from datetime import datetime
 import hashlib
 import json
+import os
 
 # Sayfa yapılandırması
 st.set_page_config(
@@ -31,8 +32,9 @@ st.set_page_config(
 #     aktif BOOLEAN DEFAULT TRUE
 # );
 
-SUPABASE_URL = "https://tlcgcdiycgfxpxwzkwuf.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsY2djZGl5Y2dmeHB4d3prd3VmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDgwMjksImV4cCI6MjA4MTIyNDAyOX0.4GnWTvUmdLzqcP0v8MAqaNUQkYgk0S8qrw6nSPsz-t4"
+# Environment variable'lardan al veya Streamlit secrets kullan
+SUPABASE_URL = os.getenv("SUPABASE_URL") or st.secrets.get("SUPABASE_URL", "")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY") or st.secrets.get("SUPABASE_KEY", "")
 
 # =============================================================================
 # KVKK METİN VERSİYONLARI
