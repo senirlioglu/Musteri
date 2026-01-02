@@ -1,5 +1,4 @@
 import streamlit as st
-import urllib.parse
 
 # Sayfa yapılandırması
 st.set_page_config(
@@ -25,8 +24,8 @@ st.markdown("""
 # =============================================================================
 # KVKK METİN VERSİYONLARI
 # =============================================================================
-AYDINLATMA_METNI_VERSIYON = "v1.0"
-ACIK_RIZA_METNI_VERSIYON = "v1.0"
+AYDINLATMA_METNI_VERSIYON = "v2.0"
+ACIK_RIZA_METNI_VERSIYON = "v2.0"
 
 # =============================================================================
 # CSS STİLLERİ
@@ -101,30 +100,52 @@ MAGAZALAR = {
     "C241": "Rasih Kaplan Cd Kepez",
 }
 
-# WhatsApp Business numarası
-WHATSAPP_NUMBER = "905399311842"
+# =============================================================================
+# WHATSAPP KANAL LİNKLERİ (20 Mağaza Pilot)
+# =============================================================================
+MAGAZA_KANAL_LINK = {
+    "H283": "https://whatsapp.com/channel/0029VbCZbtH42DcaK503cM29",
+    "J506": "https://whatsapp.com/channel/0029VbBME1L7dmeR8B1v0d0f",
+    "4282": "https://whatsapp.com/channel/0029Vb6m1CVLY6cxjBHF340Y",
+    "H519": "https://whatsapp.com/channel/0029Vb7bLrI0bIdrrrRx712C",
+    "D706": "https://whatsapp.com/channel/0029VbCOoxUGOj9eM2sPg51T",
+    "G874": "https://whatsapp.com/channel/0029Vb6hQor545uznDbLoB0R",
+    "C007": "https://whatsapp.com/channel/0029VbCPH4hGehEPyK9koP2u",
+    "6667": "https://whatsapp.com/channel/0029VbBxKdz2Jl8BioUmG707",
+    "J218": "https://whatsapp.com/channel/0029Vb7MFSSH5JLveladfU1a",
+    "C820": "https://whatsapp.com/channel/0029Vb7SWcYBA1etXR24542S",
+    "2454": "https://whatsapp.com/channel/0029VbC1ox9Fy72LKSdLG113",
+    "B548": "https://whatsapp.com/channel/0029Vb7XBW7GE56kN6MDlC3r",
+    "0396": "https://whatsapp.com/channel/0029VbC0Zl12phHD5Rm0Qb07",
+    "F296": "https://whatsapp.com/channel/0029VbBSAZo3mFY0PEdgV10w",
+    "I023": "https://whatsapp.com/channel/0029VbCCpSAD38CYoBAT3J3p",
+    "E180": "https://whatsapp.com/channel/0029VbBbr1kC1Fu5sPodMT0X",
+    "I824": "https://whatsapp.com/channel/0029VbBth2N9Bb664kmNGQ10",
+    "D587": "https://whatsapp.com/channel/0029Vb6iPplBVJl5EEtP9A2y",
+    "1715": "https://whatsapp.com/channel/0029VbBllw84Y9lqjZMMGB16",
+    "1125": "https://whatsapp.com/channel/0029Vb77PDv6hENzj3UVAo2U",
+}
 
 # =============================================================================
-# KVKK METİNLERİ
+# KVKK METİNLERİ (v2.0 - Kanal modeli için güncellendi)
 # =============================================================================
 AYDINLATMA_METNI = """
-**ÜYE MÜŞTERİ AYDINLATMA METNİ**
+**KANAL TAKİPÇİSİ AYDINLATMA METNİ**
 
 Yeni Mağazacılık A.Ş.("A101") olarak, veri sorumlusu sıfatıyla, özel hayatın gizliliğinin temeli olan kişisel verilerin korunmasını sadece mevzuata uyum sağlama kapsamında değerlendirmemekte, yaklaşımımızın temeline insana verdiğimiz değeri koymaktayız.
 
 **İŞLENEN KİŞİSEL VERİLERİNİZ**
 
-- **İletişim:** Telefon numarası (WhatsApp)
-- **Pazarlama:** Ticari elektronik ileti ret/onay bilgileri
+- **Pazarlama:** Kanal takip tercihi
 - **Lokasyon:** Mağaza tercihi
 
 **KİŞİSEL VERİLERİNİZİN İŞLENME AMAÇLARI**
 
-Kişisel verileriniz; kampanya, reklam, teklif ve pazarlama faaliyetlerinin gerçekleştirilmesi, ticari elektronik ileti gönderilmesi amaçlarıyla işlenmektedir.
+WhatsApp kanalı üzerinden kampanya ve duyuruların paylaşılması amacıyla mağaza tercih bilginiz işlenmektedir.
 
 **KİŞİSEL VERİLERİNİZİN ÜÇÜNCÜ KİŞİLERLE PAYLAŞILMASI**
 
-Kişisel verileriniz; yurt içi ve yurt dışı hizmet tedarikçileri ile pazarlama, kampanya faaliyetlerinin gerçekleştirilmesi amacıyla paylaşılabilmektedir.
+Kanal hizmeti Meta (WhatsApp) platformu üzerinden sunulmaktadır.
 
 **İLGİLİ KİŞİNİN HAKLARI**
 
@@ -138,11 +159,11 @@ Kişisel verileriniz; yurt içi ve yurt dışı hizmet tedarikçileri ile pazarl
 ACIK_RIZA_METNI = """
 **AÇIK RIZA METNİ**
 
-A101 tarafından, seçmiş olduğum mağazaya özel kampanya, indirim ve fırsatlardan WhatsApp aracılığıyla haberdar edilmem amacıyla telefon numaramın işlenmesine ve tarafıma ticari elektronik ileti gönderilmesine açık rızamla onay veriyorum.
+A101 tarafından, seçmiş olduğum mağazaya özel kampanya, indirim ve fırsatlardan WhatsApp kanalı aracılığıyla haberdar edilmem amacıyla kanal takipçisi olmayı kabul ediyorum.
 
-**Listeden çıkmak için WhatsApp üzerinden "ÇIKIŞ" yazmam yeterlidir.**
+**Kanaldan ayrılmak için WhatsApp'ta kanalı takipten çıkabilir veya bildirimleri sessize alabilirsiniz.**
 
-Açık rızamı dilediğim zaman geri alabileceğimi biliyorum.
+Kanalı dilediğim zaman takipten çıkabileceğimi biliyorum.
 """
 
 # =============================================================================
@@ -185,8 +206,8 @@ st.markdown(f'<div class="store-name">📍 {magaza_kodu} - {magaza_adi} Mağazas
 # Açıklama
 st.markdown("""
 <p class="info-text">
-    🎉 Size özel kampanya ve indirimleri<br>
-    <strong>WhatsApp üzerinden anında</strong> bildireceğiz!
+    🎉 Kanalı takip ederek<br>
+    <strong>kampanya duyurularını anında</strong> görün!
 </p>
 """, unsafe_allow_html=True)
 
@@ -220,21 +241,22 @@ onay_aydinlatma = st.checkbox(
 )
 
 onay_ticari = st.checkbox(
-    f"Ticari elektronik ileti almayı ve Açık Rıza Metni'ni ({ACIK_RIZA_METNI_VERSIYON}) kabul ediyorum.",
+    f"Kanal takipçisi olmayı ve Açık Rıza Metni'ni ({ACIK_RIZA_METNI_VERSIYON}) kabul ediyorum.",
     key="ticari"
 )
 
 st.markdown("")
 
-# WhatsApp butonu
+# WhatsApp Kanal butonu
 if onay_aydinlatma and onay_ticari:
-    # WhatsApp mesajı
-    mesaj = f"Merhaba, {magaza_kodu} {magaza_adi} mağazasındaki kampanyalardan WhatsApp üzerinden haberdar olmak istiyorum."
-    encoded_mesaj = urllib.parse.quote(mesaj)
-    whatsapp_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={encoded_mesaj}"
+    kanal_link = MAGAZA_KANAL_LINK.get(magaza_kodu)
+
+    if not kanal_link:
+        st.error("⚠️ Bu mağaza için kanal henüz tanımlı değil. Lütfen mağaza personeliyle iletişime geçiniz.")
+        st.stop()
 
     st.markdown(f'''
-        <a href="{whatsapp_link}" target="_blank" onclick="gtag('event', 'whatsapp_tiklama', {{'magaza_kodu': '{magaza_kodu}', 'magaza_adi': '{magaza_adi}'}});" style="
+        <a href="{kanal_link}" target="_blank" onclick="gtag('event', 'kanal_tiklama', {{'magaza_kodu': '{magaza_kodu}', 'magaza_adi': '{magaza_adi}'}});" style="
             display: block;
             background-color: #25D366;
             color: white;
@@ -246,15 +268,15 @@ if onay_aydinlatma and onay_ticari:
             text-align: center;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
         ">
-            💬 WhatsApp ile Katıl
+            📢 WhatsApp Kanalını Takip Et
         </a>
     ''', unsafe_allow_html=True)
 
     st.markdown("")
-    st.success("✅ Butona tıklayarak WhatsApp'a yönlendirileceksiniz.")
+    st.success("✅ Butona tıklayarak kanala yönlendirileceksiniz. Takip ederek kampanyaları duyuru olarak alırsınız.")
 
     # Çıkış bilgisi
-    st.info("ℹ️ Listeden çıkmak için WhatsApp'ta **ÇIKIŞ** yazmanız yeterlidir.")
+    st.info("ℹ️ İstediğiniz zaman kanaldan ayrılabilir veya bildirimleri sessize alabilirsiniz.")
 
 else:
     st.markdown('''
@@ -269,7 +291,7 @@ else:
             text-align: center;
             cursor: not-allowed;
         ">
-            💬 WhatsApp ile Katıl
+            📢 WhatsApp Kanalını Takip Et
         </div>
     ''', unsafe_allow_html=True)
 
