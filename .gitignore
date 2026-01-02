@@ -1,5 +1,4 @@
-# QR kodlar (lokal kullanım)
-qr_kodlar/
+# Zip dosyaları
 *.zip
 
 # Environment variables
