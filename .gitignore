@@ -1,3 +1,7 @@
+# QR kodlar (lokal kullanım)
+qr_kodlar/
+*.zip
+
 # Environment variables
 .env
 .env.local
