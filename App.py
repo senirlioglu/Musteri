@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # =============================================================================
-# GOOGLE ANALYTICS (components.html ile güvenilir yükleme)
+# GOOGLE ANALYTICS KODU (KVKK uyumlu - sadece onay sonrası yüklenir)
 # =============================================================================
 GA_TRACKING_CODE = """
 <!-- Google tag (gtag.js) -->
@@ -18,10 +18,9 @@ GA_TRACKING_CODE = """
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-HWYGLZYYF4');
+  gtag('config', 'G-HWYGLZYYF4', { 'send_page_view': false });
 </script>
 """
-components.html(GA_TRACKING_CODE, height=0)
 
 # =============================================================================
 # KVKK METİN VERSİYONLARI
@@ -192,18 +191,6 @@ if magaza_kodu not in MAGAZALAR:
 
 magaza_adi = MAGAZALAR[magaza_kodu]
 
-# GA'ya mağaza bilgisi gönder
-components.html(f"""
-<script>
-  if(typeof gtag !== 'undefined') {{
-    gtag('event', 'magaza_ziyaret', {{
-      'magaza_kodu': '{magaza_kodu}',
-      'magaza_adi': '{magaza_adi}'
-    }});
-  }}
-</script>
-""", height=0)
-
 # Mağaza bilgisi
 st.markdown(f'<div class="store-name">📍 {magaza_kodu} - {magaza_adi} Mağazası</div>', unsafe_allow_html=True)
 
@@ -259,6 +246,12 @@ if onay_aydinlatma and onay_ticari:
         st.error("⚠️ Bu mağaza için kanal henüz tanımlı değil. Lütfen mağaza personeliyle iletişime geçiniz.")
         st.stop()
 
+    # GA sadece onay verildikten sonra yüklenir (KVKK uyumlu)
+    # session_state ile sadece 1 kez yüklenir (rerun şişmesi önlenir)
+    if "ga_loaded" not in st.session_state:
+        components.html(GA_TRACKING_CODE, height=0)
+        st.session_state.ga_loaded = True
+
     # Buton ve GA tracking birlikte (components.html ile)
     components.html(f'''
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-HWYGLZYYF4"></script>
@@ -266,7 +259,11 @@ if onay_aydinlatma and onay_ticari:
           window.dataLayer = window.dataLayer || [];
           function gtag(){{dataLayer.push(arguments);}}
           gtag('js', new Date());
-          gtag('config', 'G-HWYGLZYYF4');
+          gtag('config', 'G-HWYGLZYYF4', {{ 'send_page_view': false }});
+          gtag('event', 'magaza_ziyaret', {{
+            'magaza_kodu': '{magaza_kodu}',
+            'magaza_adi': '{magaza_adi}'
+          }});
         </script>
         <a href="{kanal_link}" target="_blank" onclick="gtag('event', 'kanal_tiklama', {{'magaza_kodu': '{magaza_kodu}', 'magaza_adi': '{magaza_adi}'}});" style="
             display: block;
