@@ -1,5 +1,6 @@
 import streamlit as st
-import streamlit.components.v1 as components
+import uuid
+import requests
 
 # Sayfa yapılandırması
 st.set_page_config(
@@ -9,18 +10,25 @@ st.set_page_config(
 )
 
 # =============================================================================
-# GOOGLE ANALYTICS KODU (KVKK uyumlu - sadece onay sonrası yüklenir)
+# GOOGLE ANALYTICS - Measurement Protocol (Server-Side)
 # =============================================================================
-GA_TRACKING_CODE = """
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HWYGLZYYF4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-HWYGLZYYF4', { 'send_page_view': false });
-</script>
-"""
+GA_MEASUREMENT_ID = "G-HWYGLZYYF4"
+GA_API_SECRET = "l9IxqofASTe3cO2wfaX8sg"
+
+def ga_mp(event_name: str, params: dict = None):
+    """Server-side GA4 event gönder (Measurement Protocol)"""
+    try:
+        if "ga_client_id" not in st.session_state:
+            st.session_state.ga_client_id = f"{uuid.uuid4()}.{uuid.uuid4().int % 10**10}"
+
+        url = f"https://www.google-analytics.com/mp/collect?measurement_id={GA_MEASUREMENT_ID}&api_secret={GA_API_SECRET}"
+        payload = {
+            "client_id": st.session_state.ga_client_id,
+            "events": [{"name": event_name, "params": params or {}}]
+        }
+        requests.post(url, json=payload, timeout=3)
+    except:
+        pass  # GA hatası uygulamayı durdurmasın
 
 # =============================================================================
 # KVKK METİN VERSİYONLARI
@@ -246,26 +254,17 @@ if onay_aydinlatma and onay_ticari:
         st.error("⚠️ Bu mağaza için kanal henüz tanımlı değil. Lütfen mağaza personeliyle iletişime geçiniz.")
         st.stop()
 
-    # GA sadece onay verildikten sonra yüklenir (KVKK uyumlu)
-    # session_state ile sadece 1 kez yüklenir (rerun şişmesi önlenir)
-    if "ga_loaded" not in st.session_state:
-        components.html(GA_TRACKING_CODE, height=0)
-        st.session_state.ga_loaded = True
+    # GA Server-Side: Onay verildi eventi (KVKK uyumlu, sadece 1 kez)
+    if "ga_consent_sent" not in st.session_state:
+        ga_mp("magaza_ziyaret", {
+            "magaza_kodu": magaza_kodu,
+            "magaza_adi": magaza_adi
+        })
+        st.session_state.ga_consent_sent = True
 
-    # Buton ve GA tracking birlikte (components.html ile)
-    components.html(f'''
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HWYGLZYYF4"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){{dataLayer.push(arguments);}}
-          gtag('js', new Date());
-          gtag('config', 'G-HWYGLZYYF4', {{ 'send_page_view': false }});
-          gtag('event', 'magaza_ziyaret', {{
-            'magaza_kodu': '{magaza_kodu}',
-            'magaza_adi': '{magaza_adi}'
-          }});
-        </script>
-        <a href="{kanal_link}" target="_blank" onclick="gtag('event', 'kanal_tiklama', {{'magaza_kodu': '{magaza_kodu}', 'magaza_adi': '{magaza_adi}'}});" style="
+    # WhatsApp butonu
+    st.markdown(f'''
+        <a href="{kanal_link}" target="_blank" style="
             display: block;
             background-color: #25D366;
             color: white;
@@ -276,11 +275,10 @@ if onay_aydinlatma and onay_ticari:
             font-weight: bold;
             text-align: center;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            font-family: sans-serif;
         ">
             📢 WhatsApp Kanalını Takip Et
         </a>
-    ''', height=70)
+    ''', unsafe_allow_html=True)
 
     st.markdown("")
     st.success("✅ Butona tıklayarak kanala yönlendirileceksiniz. Takip ederek kampanyaları duyuru olarak alırsınız.")
