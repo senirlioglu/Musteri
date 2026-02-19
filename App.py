@@ -1,6 +1,7 @@
 import streamlit as st
 import uuid
 import requests
+import os
 
 # Sayfa yapılandırması
 st.set_page_config(
@@ -12,12 +13,23 @@ st.set_page_config(
 # =============================================================================
 # GOOGLE ANALYTICS - Measurement Protocol (Server-Side)
 # =============================================================================
-GA_MEASUREMENT_ID = "G-HWYGLZYYF4"
-GA_API_SECRET = "l9IxqofASTe3cO2wfaX8sg"
+def _get_secret(key):
+    val = os.environ.get(key)
+    if val:
+        return val
+    try:
+        return st.secrets[key]
+    except Exception:
+        return None
+
+GA_MEASUREMENT_ID = _get_secret("GA_MEASUREMENT_ID") or ""
+GA_API_SECRET = _get_secret("GA_API_SECRET") or ""
 
 def ga_mp(event_name: str, params: dict = None):
     """Server-side GA4 event gönder (Measurement Protocol)"""
     try:
+        if not GA_MEASUREMENT_ID or not GA_API_SECRET:
+            return
         if "ga_client_id" not in st.session_state:
             st.session_state.ga_client_id = f"{uuid.uuid4()}.{uuid.uuid4().int % 10**10}"
 
