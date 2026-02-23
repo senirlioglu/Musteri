@@ -1,6 +1,3 @@
-# Zip dosyaları
-*.zip
-
 # Environment variables
 .env
 .env.local
