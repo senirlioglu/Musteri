@@ -117,6 +117,7 @@ MAGAZALAR = {
     "B548": "Hamidiye Muratpaşa",
     "C007": "15 Temmuz Kepez",
     "C241": "Rasih Kaplan Cd Kepez",
+    "C242": "Rasih Kaplan",
     "C346": "Haseki Kepez",
     "C760": "Ermenek",
     "C820": "Kemerağzı Muratpaşa",
@@ -149,12 +150,12 @@ MAGAZALAR = {
 }
 
 # =============================================================================
-# WHATSAPP KANAL LİNKLERİ (47 Mağaza)
+# WHATSAPP KANAL LİNKLERİ (49 Mağaza)
 # =============================================================================
 MAGAZA_KANAL_LINK = {
     "0396": "https://whatsapp.com/channel/0029VbC0Zl12phHD5Rm0Qb07",
     "1125": "https://whatsapp.com/channel/0029Vb77PDv6hENzj3UVAo2U",
-    "1441": "https://whatsapp.com/channel/0029VbCTRUwElah2xTlYvB3z",
+    "1441": "https://whatsapp.com/channel/0029VbCAPbF5fM5i8Euc0g1B",
     "1715": "https://whatsapp.com/channel/0029VbBllw84Y9lqjZMMGB16",
     "2454": "https://whatsapp.com/channel/0029VbC1ox9Fy72LKSdLG113",
     "3812": "https://whatsapp.com/channel/0029VbCTRUwElah2xTlYvB3z",
@@ -170,6 +171,8 @@ MAGAZA_KANAL_LINK = {
     "B130": "https://whatsapp.com/channel/0029Vb71qvN7oQhmHTU1qg3T",
     "B548": "https://whatsapp.com/channel/0029Vb7XBW7GE56kN6MDlC3r",
     "C007": "https://whatsapp.com/channel/0029VbCPH4hGehEPyK9koP2u",
+    "C241": "https://whatsapp.com/channel/0029VbCWhry0lwgomKxkyv03",
+    "C242": "https://whatsapp.com/channel/0029VbCWhry0lwgomKxkyv03",
     "C346": "https://whatsapp.com/channel/0029VbCWWKG77qVJmc9sQc0N",
     "C760": "https://whatsapp.com/channel/0029VbCKZMe0G0XZTjjOZl11",
     "C820": "https://whatsapp.com/channel/0029Vb7SWcYBA1etXR24542S",
